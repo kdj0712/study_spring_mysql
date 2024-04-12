@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonCode">
+	<select id="selectBySearch" parameterType="Map" resultType="Map">
+        SELECT * FROM spring_mysql.COMMON_CODE;
+	</select>
+	<!-- 상세 -->
+	<select id="selectByUID" parameterType="Map" resultType="Map">
+		select *
+		from COMMON_CODE
+		WHERE 1=1
+		AND PK_UNIQUE = #{PK_UNIQUE};
+	</select>
+
+	<!-- 입력 -->
+	<insert id="insert" parameterType="Map">
+		INSERT INTO `COMMON_CODE` 
+		(`PK_UNIQUE`, `CODE_NAME`, `DESCRIPTION`, `PARENT_UNIQUE`) 
+		VALUES 
+		(#{PK_UNIQUE}, #{CODE_NAME}, #{DESCRIPTION}, #{PARENT_UNIQUE}) ;
+    </insert>
+
+
+	<!-- 수정 -->
+	<update id="update" parameterType="Map">
+		UPDATE COMMON_CODE
+		SET CODE_NAME = #{CODE_NAME}
+		WHERE 1 = 1
+		AND PK_UNIQUE = #{PK_UNIQUE};
+    </update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="Map">
+		DELETE FROM COMMON_CODE
+		WHERE 1 = 1
+		AND PK_UNIQUE = #{PK_UNIQUE};
+    </delete>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QuestBoard">
+
+	<select id="selectBySearch" parameterType="Map" resultType="Map">
+        SELECT * FROM spring_mysql.BOARDS;
+	</select>
+
+
+	<!-- 상세 -->
+	<select id="selectByUID" parameterType="Map" resultType="Map">
+		select *
+		from BOARDS
+		WHERE 1=1
+		AND PK_BOARDS = #{PK_BOARDS};
+	</select>
+
+	<!-- 입력 -->
+	<insert id="insert" parameterType="Map">
+        INSERT INTO `BOARDS` 
+        (`PK_BOARDS`, `TITLE`, `CONTENTS`, `WRITER_ID`, `CREATE_DATE`, `PARENT_BOARDS`)
+		VALUES 
+		(#{PK_BOARDS}, #{TITLE}, #{CONTENTS}, #{WRITER_ID},NOW(),#{PARENT_BOARDS}) ;
+    </insert>
+
+
+	<!-- 수정 -->
+	<update id="update" parameterType="Map">
+		UPDATE BOARDS
+		SET TITLE = #{TITLE}
+		WHERE 1 = 1
+		AND PK_BOARDS = #{PK_BOARDS};
+    </update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="Map">
+		DELETE FROM BOARDS
+		WHERE 1 = 1
+		AND PK_UNIQUE = #{PK_UNIQUE};
+    </delete>
+</mapper>

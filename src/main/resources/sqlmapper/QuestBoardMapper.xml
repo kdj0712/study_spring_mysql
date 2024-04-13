@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QuestBoard">
+<mapper namespace="board">
 
 	<select id="selectBySearch" parameterType="Map" resultType="Map">
         SELECT * FROM spring_mysql.BOARDS;
@@ -10,33 +10,52 @@
 	<!-- 상세 -->
 	<select id="selectByUID" parameterType="Map" resultType="Map">
 		select *
-		from BOARDS
+		from spring_mysql.BOARDS
 		WHERE 1=1
 		AND PK_BOARDS = #{PK_BOARDS};
 	</select>
 
 	<!-- 입력 -->
 	<insert id="insert" parameterType="Map">
-        INSERT INTO `BOARDS` 
-        (`PK_BOARDS`, `TITLE`, `CONTENTS`, `WRITER_ID`, `CREATE_DATE`, `PARENT_BOARDS`)
+        INSERT INTO spring_mysql.BOARDS 
+        (PK_BOARDS, TITLE, CONTENTS, WRITER_ID, CREATE_DATE, PARENT_BOARDS)
 		VALUES 
 		(#{PK_BOARDS}, #{TITLE}, #{CONTENTS}, #{WRITER_ID},NOW(),#{PARENT_BOARDS}) ;
     </insert>
 
-
 	<!-- 수정 -->
 	<update id="update" parameterType="Map">
-		UPDATE BOARDS
+		UPDATE spring_mysql.BOARDS
 		SET TITLE = #{TITLE}
 		WHERE 1 = 1
 		AND PK_BOARDS = #{PK_BOARDS};
     </update>
-	
-	
+
 	<!-- 삭제 -->
 	<delete id="delete" parameterType="Map">
-		DELETE FROM BOARDS
-		WHERE 1 = 1
-		AND PK_UNIQUE = #{PK_UNIQUE};
+		DELETE spring_mysql.VISITORS, spring_mysql.BOARDS
+		FROM spring_mysql.VISITORS
+		JOIN spring_mysql.BOARDS 
+		ON VISITORS.PK_BOARDS = BOARDS.PK_BOARDS
+		WHERE VISITORS.PK_BOARDS = #{PK_BOARDS};
     </delete>
+	<!-- VISITORS 테이블에서 PK_BOARDS를 사용하는 레코드가 있는지 확인 -->
+	<select id="checkVisitorExists" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM VISITORS WHERE PK_BOARDS = #{PK_BOARDS}
+	</select>
+
+	<!-- VISITORS와 BOARDS에서 PK_BOARDS를 사용하는 레코드 삭제 -->
+	<delete id="deleteVisitorAndBoard" parameterType="map">
+		DELETE VISITORS, BOARDS
+		FROM BOARDS
+		INNER JOIN VISITORS ON VISITORS.PK_BOARDS = BOARDS.PK_BOARDS
+		WHERE BOARDS.PK_BOARDS = #{PK_BOARDS}
+	</delete>
+
+	<!-- BOARDS에서만 PK_BOARDS를 사용하는 레코드 삭제 -->
+	<delete id="deleteBoardOnly" parameterType="map">
+		DELETE FROM BOARDS
+		WHERE PK_BOARDS = #{PK_BOARDS}
+	</delete>
+
 </mapper>

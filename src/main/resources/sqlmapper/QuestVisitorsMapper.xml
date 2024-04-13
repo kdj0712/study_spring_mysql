@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QuestVisitors">
+<mapper namespace="visitor">
 	<select id="selectBySearch" parameterType="Map" resultType="Map">
-        SELECT * FROM spring_mysql.COMMON_CODE;
+        SELECT * FROM spring_mysql.VISITORS;
 	</select>
 	<!-- 상세 -->
 	<select id="selectByUID" parameterType="Map" resultType="Map">
 		select *
-		from COMMON_CODE
+		from spring_mysql.VISITORS
 		WHERE 1=1
-		AND PK_UNIQUE = #{PK_UNIQUE};
+		AND PK_VISITORS = #{PK_VISITORS};
 	</select>
 
 	<!-- 입력 -->
 	<insert id="insert" parameterType="Map">
-		INSERT INTO `COMMON_CODE` 
-		(`PK_UNIQUE`, `CODE_NAME`, `DESCRIPTION`, `PARENT_UNIQUE`) 
+		INSERT INTO spring_mysql.VISITORS 
+		(PK_VISITORS, WRITER_ID, PK_BOARDS) 
 		VALUES 
-		(#{PK_UNIQUE}, #{CODE_NAME}, #{DESCRIPTION}, #{PARENT_UNIQUE}) ;
+		(#{PK_VISITORS}, #{WRITER_ID}, #{PK_BOARDS}) ;
     </insert>
-
 
 	<!-- 수정 -->
 	<update id="update" parameterType="Map">
-		UPDATE COMMON_CODE
-		SET CODE_NAME = #{CODE_NAME}
+		UPDATE spring_mysql.VISITORS
+		SET PK_BOARDS = #{PK_BOARDS}
 		WHERE 1 = 1
-		AND PK_UNIQUE = #{PK_UNIQUE};
+		AND WRITER_ID = #{WRITER_ID};
     </update>
-	
 	
 	<!-- 삭제 -->
 	<delete id="delete" parameterType="Map">
-		DELETE FROM COMMON_CODE
+		DELETE FROM spring_mysql.VISITORS
 		WHERE 1 = 1
-		AND PK_UNIQUE = #{PK_UNIQUE};
+		AND PK_VISITORS = #{PK_VISITORS};
     </delete>
 </mapper>

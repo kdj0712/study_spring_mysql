@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+	<select id="selectBysearch" parameterType="Map" resultType="Map">
+        SELECT * FROM BOARDS;
+	</select>
+
+	<!-- 상세 -->
+	<select id="selectByUID" parameterType="Map" resultType="Map">
+        SELECT * 
+		FROM BOARDS 
+		WHERE 1 = 1
+		AND PK_BOARDS = #{PK_BOARDS}; <!-- #{PK_BOARDS} -->
+	</select>
+
+	<!-- 입력 -->
+	<insert id="insert" parameterType="Map">
+	INSERT INTO `BOARDS` 
+	(`PK_BOARDS`, `TITLE`, `CONTENTS`, `WRITER_ID`, CREATE_DATE,`PARENT_BOARDS`) 
+	VALUES
+	(#{PK_BOARDS}, #{TITLE}, #{CONTENTS}, #{WRITER_ID},NOW(), #{PARENT_BOARDS});
+    </insert>
+
+	<!-- 수정 -->
+	<update id="update" parameterType="Map">
+		update PK_BOARDS
+		set WRITER_ID = #{WRITER_ID}
+		where 1 = 1
+		and PK_BOARDS = #{PK_BOARDS};
+    </update>
+
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="Map">
+		delete from BOARDS
+		where 1 = 1
+		and PK_BOARDS = #{PK_BOARDS};
+    </delete>
+</mapper>

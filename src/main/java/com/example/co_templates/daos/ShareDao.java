@@ -11,7 +11,6 @@ public class ShareDao {
 
     public Object getList(String sqlMapId, Object dataMap) {
 		Object result = sqlSessionTemplate.selectList(sqlMapId, dataMap);
-
 		return result;
 	}
 

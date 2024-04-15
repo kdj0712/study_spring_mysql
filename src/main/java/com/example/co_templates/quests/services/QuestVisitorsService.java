@@ -35,8 +35,6 @@ public class QuestVisitorsService {
         String sqlMapId = "visitor.insert";
         // (`PK_VISITORS`, `WRITER_ID`, `PK_BOARDS`) 
         dataMap.put("PK_VISITORS", pk_visitors);
-        dataMap.put("WRITER_ID", "user-16");
-        dataMap.put("PK_BOARDS", "news-007");
         Object insert = shareDao.insert(sqlMapId, dataMap);
         return insert;
     }
@@ -48,18 +46,18 @@ public class QuestVisitorsService {
         Object update = shareDao.update(sqlMapId, dataMap);
         return update;
     }
-    public Object delete(HashMap<String,Object> dataMap){
+    public Object delete(HashMap<String,Object> dataMap,String PK_VISITORS){
         String sqlMapId = "visitor.delete";
-        dataMap.put("PK_VISITORS", pk_visitors);
+        dataMap.put("PK_VISITORS", PK_VISITORS);
         Object delete = shareDao.delete(sqlMapId, dataMap);
         return delete;
     }
-    public void callDao(HashMap<String,Object> dataMap){
-        this.selectMany(dataMap);
-        this.selectOne(dataMap);
-        this.insert(dataMap);
-        this.update(dataMap);
-        this.delete(dataMap);
-        return ; 
-    }
+    // public void callDao(HashMap<String,Object> dataMap){
+    //     this.selectMany(dataMap);
+    //     this.selectOne(dataMap);
+    //     this.insert(dataMap);
+    //     this.update(dataMap);
+    //     this.delete(dataMap);
+    //     return ; 
+    // }
 }

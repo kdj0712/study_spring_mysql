@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-public class CommonCodeController {
+public class CommonCodeRestController {
 
     @Autowired
     CommonCodeService commonCodeService;

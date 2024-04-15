@@ -35,6 +35,11 @@ dependencies {
 	// databases
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1'	
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// JSP
+	providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
 }
 
 // tasks.named('bootBuildImage') {

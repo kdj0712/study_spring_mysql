@@ -46,14 +46,13 @@ public class QuestBoardRestController {
                                   @PathVariable(required = false) String PK_BOARDS,
                                   @RequestParam HashMap<String,Object> dataMap,
                                   @RequestParam(required = false) String titleKeyword) {
-        String viewPath = "/WEB-INF/views/boards/list.jsp";
-    
-        // 사용자로부터 받은 제목 키워드를 dataMap에 추가
+        // ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();       
         if (titleKeyword != null && !titleKeyword.isEmpty()) {
             dataMap.put("titleKeyword", titleKeyword);
         }
-        
-        ArrayList<HashMap<String, Object>> list = questBoardService.selectMany(dataMap);
+                                        
+        String viewPath = "/WEB-INF/views/boards/list.jsp";
+        Object list = questBoardService.selectSearchWithPagination(dataMap);
         modelAndView.setViewName(viewPath);
         modelAndView.addObject("list", list);
         modelAndView.addObject("dataMap", dataMap);

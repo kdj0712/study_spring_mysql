@@ -1,99 +1,124 @@
-<%@ page import="java.util.HashMap, java.util.ArrayList" %>
-<!DOCTYPE html>
-<html lang="en">
+<%@ page import="java.util.HashMap, java.util.ArrayList, com.example.co_templates.utils.Paginations" %>
+    <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap 5 Template</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-</head>
+        <!DOCTYPE html>
+        <html lang="en">
+        <%@ include file="/WEB-INF/views/templates/header.jsp" %>
 
-<body>
+            <body>
 
-    <!-- Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/home">Home</a>
+                <!-- Menu -->
+                <%@ include file="/WEB-INF/views/templates/navigator.jsp" %>
+
+                    <!-- Main Content -->
+                    <form action="/q/board/list" method="get">
+                        <div class="container mt-4">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h2>Search</h2>
+                                    <% HashMap dataMap=(HashMap) request.getAttribute("dataMap"); String
+                                        searchType=(String) dataMap.get("searchType"); String search=(String)
+                                        dataMap.getOrDefault("search",""); %>
+
+                                        <div class="input-group mb-3">
+                                            <select class="form-select" id="searchType" name="searchType">
+                                                <option selected>검색주제</option>
+                                                <option value="PK_BOARDS" <%="PK_BOARDS" .equals(searchType)
+                                                    ? "selected" : "" %>>PK_BOARDS</option>
+                                                <option value="TITLE" <%="TITLE" .equals(searchType) ? "selected" : ""
+                                                    %>>TITLE</option>
+                                                <option value="CONTENTS" <%="CONTENTS" .equals(searchType) ? "selected"
+                                                    : "" %>>CONTENTS</option>
+                                                <option value="WRITER_ID" <%="WRITER_ID" .equals(searchType)
+                                                    ? "selected" : "" %>>WRITER_ID</option>
+                                                <option value="CREATE_DATE" <%="CREATE_DATE" .equals(searchType)
+                                                    ? "selected" : "" %>>CREATE_DATE</option>
+                                                <option value="PARENT_BOARDS" <%="PARENT_BOARDS" .equals(searchType)
+                                                    ? "selected" : "" %>>PARENT_BOARDS</option>
+
+                                            </select>
+                                            <!-- name 이 controller에서 key 역할을 함 -->
+                                            <input type="text" class="form-control" name="search" value="<%= search %>"
+                                                placeholder="Search..." id="keydownEnter">
+                                            <button class="btn btn-primary">Go</button>
+                                        </div>
+                                </div>
+                                <div class="col-12">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Check</th>
+                                            <th>PK_BOARDS</th>
+                                            <th>TITLE</th>
+                                            <th>CONTENTS</th>
+                                            <th>WRITER_ID</th>
+                                            <th>CREATE_DATE</th>
+                                            <th>PARENT_BOARDS</th>
+                                        </thead>
+                                        <tbody>
+                                            <% HashMap setlist=(HashMap) request.getAttribute("list"); ArrayList
+                                                resultList=(ArrayList) setlist.get("resultList"); for(Object obj :
+                                                resultList){ HashMap record=(HashMap)obj; %>
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" class="form-check-input" name="deleteIds"
+                                                            value='<%= record.get("PK_BOARDS") %>'>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("PK_BOARDS") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("TITLE") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("CONTENTS") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("WRITER_ID") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("CREATE_DATE") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= record.get("PARENT_BOARDS") %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pagination with buttons and query parameters -->
+                        <% Paginations paginations=(Paginations) setlist.get("paginations"); %>
+
+                            <nav aria-label="Page navigation">
+                                <div>
+                                    Total Count : <%= paginations.getTotalCount() %>
+                                </div>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item"><button class="page-link" type="submit" name="currentPage"
+                                            value="${dataMap.previousPage}">Previous</button></li>
+                                    <% for(int i=paginations.getBlockStart(); i <=paginations.getBlockEnd(); i++){ %>
+                                        <li class="page-item">
+                                            <button class="page-link" type="submit" name="currentPage" value="<%= i %>">
+                                                <%= i %>
+                                            </button>
+                                        </li>
+                                        <% } %>
+                                            <!-- <li class="page-item"><button class="page-link" type="submit" name="currentPage" value="1">1</button>
+                        </li>
+                        <li class="page-item"><button class="page-link" type="submit" name="currentPage" value="2">2</button>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/joinForm">joinForm</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+                    <li class="page-item"><button class="page-link" type="submit" name="currentPage" value="3">3</button>
+                    </li> -->
+                                            <li class="page-item"><button class="page-link" type="submit"
+                                                    name="currentPage" value="${dataMap.nextPage}">Next</button>
+                                            </li>
+                                </ul>
+                            </nav>
+                    </form>
+                    <!-- Footer -->
+                    <%@ include file="/WEB-INF/views/templates/footer.jsp" %>
+            </body>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8">
-                <h2>Search</h2>
-                <form action="/q/board/list" method="get">
-                    <% 
-                        HashMap dataMap = (HashMap) request.getAttribute("dataMap");
-                        String search = (String) dataMap.getOrDefault("search","");
-                    %>
-
-                <div class="input-group mb-3">
-                    <!-- name 이 controller에서 key 역할을 함 -->
-                    <input type="text" class="form-control" name="search" value= "<%= search %>"   placeholder="Search..." id="keydownEnter">
-                    <button class="btn btn-primary">Go</button>
-                </div>
-            </form>
-            </div>
-            <div class="col-12">
-                <table class="table">
-                    <thead>
-                        <th>PK_BOARDS</th>
-                        <th>TITLE</th>
-                        <th>CONTENTS</th>
-                        <th>WRITER_ID</th>
-                        <th>CREATE_DATE</th>
-                        <th>PARENT_BOARDS</th>
-                    </thead>
-                    <tbody>
-                        <% 
-                            ArrayList list = (ArrayList)request.getAttribute("list");
-                            for(Object obj : list){
-                                HashMap record = (HashMap)obj;
-                        %>
-                        <tr>
-                            <td><%= record.get("PK_BOARDS") %></td>
-                            <td><%= record.get("TITLE") %></td>
-                            <td><%= record.get("CONTENTS") %></td>
-                            <td><%= record.get("WRITER_ID") %></td>
-                            <td><%= record.get("CREATE_DATE") %></td>
-                            <td><%= record.get("PARENT_BOARDS") %></td>
-                        </tr>
-                        <% 
-                            }
-                        %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-4">
-        <div class="container">
-            <p>&copy; 2023 Your Website. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+        </html>

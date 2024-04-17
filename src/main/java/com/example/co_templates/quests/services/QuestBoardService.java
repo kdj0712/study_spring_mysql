@@ -1,4 +1,5 @@
 package com.example.co_templates.quests.services;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,17 @@ public class QuestBoardService {
         this.commons = commons;
     }
 
-    public Object selectMany(HashMap<String,Object> dataMap){
+    public ArrayList<HashMap<String, Object>> selectMany(HashMap<String,Object> dataMap){
         String sqlMapId = "board.selectBySearch";
         Object list = shareDao.getList(sqlMapId, dataMap);
-        return list;
+        return (ArrayList<HashMap<String, Object>>) list;
     }
 
-    public Object selectOne(HashMap<String,Object> dataMap){
+    public HashMap<String, Object> selectOne(HashMap<String,Object> dataMap,String PK_BOARDS){
         String sqlMapId = "board.selectByUID";
-        dataMap.put("PK_BOARDS","news-004");
+        dataMap.put("PK_BOARDS",PK_BOARDS);
         Object one = shareDao.getOne(sqlMapId, dataMap);
-        return one;
+        return (HashMap<String, Object>)one;
     }
     public Object insert(HashMap<String,Object> dataMap){
         pk_boards = commons.getUniqueSequence();
@@ -63,9 +64,9 @@ public class QuestBoardService {
     }
     
     public void callDao(HashMap<String,Object> dataMap){
-        this.selectMany(dataMap);
-        this.selectOne(dataMap);
-        this.insert(dataMap);
+        // this.selectMany(dataMap);
+        // this.selectOne(dataMap);
+        // this.insert(dataMap);
         // this.update(dataMap);
         // this.delete(dataMap);
         return ; 

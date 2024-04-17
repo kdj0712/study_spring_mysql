@@ -1,3 +1,4 @@
+<%@ page import="java.util.HashMap, java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,10 +40,48 @@
         <div class="row">
             <div class="col-md-8">
                 <h2>Search</h2>
+                <form action="/q/board/list" method="get">
+                    <% 
+                        HashMap dataMap = (HashMap) request.getAttribute("dataMap");
+                        String search = (String) dataMap.getOrDefault("search","");
+                    %>
+
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search..." id="keydownEnter">
-                    <button class="btn btn-primary" type="button" onclick="carTableBody()">Go</button>
+                    <!-- name 이 controller에서 key 역할을 함 -->
+                    <input type="text" class="form-control" name="search" value= "<%= search %>"   placeholder="Search..." id="keydownEnter">
+                    <button class="btn btn-primary">Go</button>
                 </div>
+            </form>
+            </div>
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <th>PK_BOARDS</th>
+                        <th>TITLE</th>
+                        <th>CONTENTS</th>
+                        <th>WRITER_ID</th>
+                        <th>CREATE_DATE</th>
+                        <th>PARENT_BOARDS</th>
+                    </thead>
+                    <tbody>
+                        <% 
+                            ArrayList list = (ArrayList)request.getAttribute("list");
+                            for(Object obj : list){
+                                HashMap record = (HashMap)obj;
+                        %>
+                        <tr>
+                            <td><%= record.get("PK_BOARDS") %></td>
+                            <td><%= record.get("TITLE") %></td>
+                            <td><%= record.get("CONTENTS") %></td>
+                            <td><%= record.get("WRITER_ID") %></td>
+                            <td><%= record.get("CREATE_DATE") %></td>
+                            <td><%= record.get("PARENT_BOARDS") %></td>
+                        </tr>
+                        <% 
+                            }
+                        %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -2,7 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CommonCode">
 	<select id="selectBySearch" parameterType="Map" resultType="Map">
-        SELECT * FROM spring_mysql.COMMON_CODE;
+		SELECT * 
+		FROM COMMON_CODE
+		WHERE 1 = 1
+		<!-- and YEAR > #{search} -->
+		<!-- and YEAR <![CDATA[  > ]]> #{search} -->
+		<!-- <![CDATA [  query express(!<>=?)  ]]> -->
+		<if test="search != null and search != ''">
+        and ${searchType} regexp #{search}
+        </if>
+		;
 	</select>
 	<!-- 상세 -->
 	<select id="selectByUID" parameterType="Map" resultType="Map">
@@ -10,6 +19,25 @@
 		from COMMON_CODE
 		WHERE 1=1
 		AND PK_UNIQUE = #{PK_UNIQUE};
+	</select>
+
+	<!-- total count -->
+	<select id="selectTotal" parameterType="Map" resultType="int">
+        select count(*) as cnt
+        from COMMON_CODE
+        ;
+	</select>
+
+	<!-- 검색 with pagination -->
+	<select id="selectSearchWithPagination" parameterType="Map" resultType="Map">
+        SELECT *
+        FROM COMMON_CODE
+        where 1 = 1
+		<if test="search != null and search != ''">
+        and ${searchType} regexp #{search}
+        </if>
+        limit #{pageBegin}, #{pageScale}
+        ;
 	</select>
 
 	<!-- 입력 -->
@@ -36,4 +64,18 @@
 		WHERE 1 = 1
 		AND PK_UNIQUE = #{PK_UNIQUE};
     </delete>
+
+
+	<!-- 삭제 -->
+	<delete id="deletewithin" parameterType="Map">
+		DELETE FROM COMMON_CODE
+		WHERE
+		<foreach item="item" index="index" collection="deleteIds"
+			open="PK_UNIQUE in(" separator="," close=")" nullable="true">
+			#{item}
+		</foreach>
+		;
+    </delete>
+
+	
 </mapper>

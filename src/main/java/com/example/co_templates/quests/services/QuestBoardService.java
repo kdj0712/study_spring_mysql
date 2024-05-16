@@ -37,7 +37,6 @@ public class QuestBoardService {
         return count;
     }
 
-
     public Map selectSearchWithPagination(Map dataMap) {
         String deleteIdsStr = (String) dataMap.get("deleteIds");
         if (deleteIdsStr != null && !deleteIdsStr.isEmpty()) {

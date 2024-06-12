@@ -14,4 +14,4 @@
 - Gradle for Java
 - SpringBoot Extension Pack
 #### samples
-- [src\main\java\com\example\co_templates\CoTemplatesApplication.java](src\main\java\com\example\co_templates\CoTemplatesApplication.java)
+- [src\main\java\com\example\co_templates\CoTemplatesApplication.java](src/main/java/com/example/co_templates/CoTemplatesApplication.java)
